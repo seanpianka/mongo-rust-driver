@@ -202,8 +202,7 @@ fn transactions() {
 
     let should_skip = RUNTIME.block_on(async {
         let test_client = AsyncTestClient::new().await;
-        !(test_client.is_replica_set() && test_client.server_version_gte(4, 0)
-            || test_client.is_sharded() && test_client.server_version_gte(4, 2))
+        !test_client.supports_transactions()
     });
     if should_skip {
         return;

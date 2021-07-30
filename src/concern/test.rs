@@ -179,9 +179,7 @@ async fn snapshot_read_concern() {
         .database(function_name!())
         .collection::<Document>(function_name!());
 
-    if client.is_replica_set() && client.server_version_gte(4, 0)
-        || client.is_sharded() && client.server_version_gte(4, 2)
-    {
+    if client.supports_transactions() {
         let mut session = client.start_session(None).await.unwrap();
         let options = TransactionOptions::builder()
             .read_concern(ReadConcern::snapshot())
